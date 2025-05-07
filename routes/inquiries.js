@@ -14,23 +14,35 @@ const transporter = nodemailer.createTransport({
 
 router.post("/", async (req, res) => {
   try {
-    const { name, email, message } = req.body;
+    const { name, email, message, phone, serviceInterest } = req.body; // <-- added number and service
     if (!name || !email || !message) {
       return res
         .status(400)
         .json({ success: false, error: "All fields are required." });
     }
-    const inquiry = new Inquiry({ name, email, message });
+    const inquiry = new Inquiry({
+      name,
+      email,
+      message,
+      phone,
+      serviceInterest,
+    }); // <-- add to model if needed
     await inquiry.save();
 
     // Send email notification
     await transporter.sendMail({
       from: `"Educatumy Inquiry" <${process.env.MAIL_USER}>`,
-      to: process.env.MAIL_RECEIVER, // The email address to receive inquiries
+      to: process.env.MAIL_RECEIVER,
       subject: "New Inquiry Received",
-      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+      text: `Name: ${name}
+Email: ${email}
+Number: ${phone || "N/A"}
+Service: ${serviceInterest || "N/A"}
+Message: ${message}`,
       html: `<p><strong>Name:</strong> ${name}</p>
              <p><strong>Email:</strong> ${email}</p>
+             <p><strong>Number:</strong> ${phone || "N/A"}</p>
+             <p><strong>Service:</strong> ${serviceInterest || "N/A"}</p>
              <p><strong>Message:</strong><br/>${message}</p>`,
     });
 
