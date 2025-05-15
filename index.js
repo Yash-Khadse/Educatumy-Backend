@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const inquiriesRouter = require("./routes/inquiries");
 const servicesRouter = require("./routes/services");
+const adminRouter = require("./routes/admin");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -16,6 +17,7 @@ app.use(express.json());
 // Routes
 app.use("/inquiries", inquiriesRouter);
 app.use("/services", servicesRouter);
+app.use("/admin", adminRouter);
 
 // Root endpoint
 app.get("/", (req, res) => {
