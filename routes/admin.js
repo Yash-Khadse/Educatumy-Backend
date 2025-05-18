@@ -2,8 +2,12 @@ const express = require("express");
 const Service = require("../models/Service");
 const Inquiry = require("../models/Inquiry");
 const nodemailer = require("nodemailer");
+const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
+
+// Protect all admin routes
+router.use(authMiddleware);
 
 // Add a new service
 router.post("/services", async (req, res) => {
