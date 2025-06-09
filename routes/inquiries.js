@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
     // Send email notification
     await transporter.sendMail({
       from: `"Educatumy Inquiry" <${process.env.MAIL_USER}>`,
-      to: "shiva.prasad923@gmail.com",
+      to: ["shiva.prasad923@gmail.com", "inquiry@educatumy.com"], // <-- Add more recipients here
       subject: "New Inquiry Received",
       text: `Name: ${name}
 Email: ${email}
